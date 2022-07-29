@@ -8,39 +8,44 @@ estimating wine quality (using the data provided).
 Code is available on GitHub (https://github.com/ss4456/wine-quality)
 Docker Hub image is available here (public link): https://hub.docker.com/r/ss4456/wine-quality
 
-MODEL TRAINING
+SETTING UP THE CLOUD ENVIRONMENT
 ======================================================
-After experimentation with different machine learning model - Linear Regression, 
-Logisitic Regression, Random Forests, the best performance on validation dataset
-was achieved using Random Forests (F1 0.57, compared to 0.48 and 0.52 with Linear 
-and Logistic models)
+Step 1: Update the flintrock config file
+- Update the PEM file
+- Set number of slaves to 4.
+- Set HDFS and spark install to True
+- Set AMI based on EC2 instance (previously created)
 
-Step 1:
-Update the flintrock config file; set number of slaves to 4.
-Run the following commands to set up the cluster
+Step 2: Run the following commands to set up the cluster
 > flintrock launch ss4456_cluster
 > flintrock run-command ss4456_cluster 'sudo yum install -y gcc'
 > flintrock run-command ss4456_cluster 'pip3 install numpy'
 > flintrock run-command ss4456_cluster 'pip3 install findspark'
 
-Step 2:
-Secure copy the code and data from local system to the master node
+MODEL TRAINING
+======================================================
+After experimentation with different machine learning model - Linear Regression, 
+Logisitic Regression, Random Forests, the best performance on validation dataset
+was achieved using Random Forests (F1 0.57, compared to 0.48 and 0.52 with Linear 
+and Logistic models). I experimented with both standard normalization and min max 
+scaling to preprocess the data; they didn't bring significant improvements, however,
+the standard normalization was marginally better, and hence is included in the final
+training code (on GitHub).
 
-Step 3: Log onto the cluster
+Step 1: Secure copy (or git clone) the code and data from local system to the master node
+
+Step 2: Log onto the cluster
 > flintrock login ss4456_cluster
 
-Step 4:
-Copy the data on the master node to the HDFS
+Step 3: Copy the data on the master node to the HDFS
 > hadoop fs -mkdir /data
 > hadoop fs -put ./TrainingDataset.csv /data
 > hadoop fs -put ./ValidationDataset.csv /data
 
-Step 5: 
-Launch training
+Step 4: Launch training
 > ./spark/bin/spark-submit train_rf.py 
 
-Step 6:
-Download the trained model (preprocessing and machine learning models)
+Step 5: Download the trained model (preprocessing and machine learning models)
 > hadoop fs -get /models models
 
 MODEL TESTING ON THE CLUSTER (non-Docker mode)
