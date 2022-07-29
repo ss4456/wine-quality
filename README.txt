@@ -5,8 +5,8 @@ CS643 Programming Assignment 2
 This README.txt file contains instructions to train machine learning model for 
 estimating wine quality (using the data provided).
 
-Code is available on GitHub ()
-Docker Hub image is available here:
+Code is available on GitHub (https://github.com/ss4456/wine-quality)
+Docker Hub image is available here (public link): https://hub.docker.com/r/ss4456/wine-quality
 
 MODEL TRAINING
 ======================================================
