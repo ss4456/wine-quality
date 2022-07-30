@@ -83,12 +83,12 @@ Step 2: Log on the EC2 instance. Here, I used the master node for testing,
 
 Step 3: Pull the image from the docker hub (unless it's already stored locally)
 > docker login (enter login credentials)
-> docker pull ss4456:wine-quality/version1
+> docker pull ss4456/wine-quality:version1
 
 Step 4: Process the CSV file using the model on the docker container
-> docker run -v /home/ec2-user:/localdata  ss4456:wine-quality/version1 python3 predict.py /localdata/<local-csv-file>
+> docker run -v /home/ec2-user:/localdata  ss4456/wine-quality:version1 python3 predict.py /localdata/<local-csv-file>
 
 As a test example, run the following command
-> docker run -v /home/ec2-user:/localdata  ss4456:wine-quality/version1 python3 predict.py /localdata/ValidationDataset.csv
+> docker run -v /home/ec2-user:/localdata  ss4456/wine-quality:version1 python3 predict.py /localdata/ValidationDataset.csv
 Expected output: 
 "F measure: 0.5743" (rounded for readability)
